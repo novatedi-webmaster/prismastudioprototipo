@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   ChevronLeft, Save, Trash2, Image as ImageIcon, Heart, 
   UploadCloud, Play, CheckCircle, RefreshCw, X, Sparkles, HelpCircle 
@@ -160,7 +161,7 @@ export default function WorkDetail() {
     ];
     
     // Pick an image that is not currently in the images list
-    const available = mockArtUrls.filter(u => !images.includes(url => url === u));
+    const available = mockArtUrls.filter(u => !images.includes(u));
     const randomUrl = available.length > 0 
       ? available[Math.floor(Math.random() * available.length)]! 
       : mockArtUrls[Math.floor(Math.random() * mockArtUrls.length)]!;
