@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
 import { 
   Plus, Trash2, ArrowUp, ArrowDown, Edit, Save, 
   RefreshCw, CheckCircle, HelpCircle, Layers, ToggleLeft, ToggleRight 
