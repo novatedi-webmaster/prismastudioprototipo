@@ -438,10 +438,8 @@ function MasterLayout() {
           {/* LOG OUT */}
           <button
             onClick={() => {
-              if (confirm('¿Deseas cerrar tu sesión de Prisma Studio? El token se limpiará de la memoria de sesión.')) {
-                logout();
-                toast.success('Sesión finalizada correctamente.');
-              }
+              logout();
+              toast.success('Sesión finalizada correctamente.');
             }}
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold text-rose-500 hover:bg-rose-50/50 hover:text-rose-600 transition-all ${
               isCollapsed ? 'justify-center' : 'text-left'
