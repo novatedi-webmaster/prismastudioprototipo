@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './lib/contexts/AuthContext';
 import { ThemeProvider, useTheme } from './lib/contexts/ThemeContext';
-import { PublicThemeProvider, usePublicTheme } from './lib/contexts/PublicThemeContext';
+import { PublicThemeProvider } from './lib/contexts/PublicThemeContext';
 import { ModuleProvider } from './lib/contexts/ModuleContext';
 
 import Login from './features/auth/Login';
@@ -136,7 +136,6 @@ function MasterLayout() {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { activeTheme } = usePublicTheme();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isCmdOpen, setIsCmdOpen] = useState(false);
