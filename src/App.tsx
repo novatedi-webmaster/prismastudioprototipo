@@ -317,7 +317,7 @@ function MasterLayout() {
   const activePath = location.pathname;
 
   return (
-    <div className="min-h-screen flex bg-zinc-50 dark:bg-zinc-950 text-foreground transition-colors font-sans antialiased">
+    <div className="h-screen flex overflow-hidden bg-zinc-50 dark:bg-zinc-950 text-foreground transition-colors font-sans antialiased">
       
       {/* SIDEBAR */}
       <aside 
