@@ -477,7 +477,10 @@ function MasterLayout() {
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               Soberano
             </Badge>
-            <div className="text-muted-foreground flex items-center gap-1">
+            <div 
+              onClick={() => navigate('/help')}
+              className="text-muted-foreground flex items-center gap-1 hover:text-foreground cursor-pointer transition-colors"
+            >
               <HelpCircle size={14} />
               <span className="hidden md:inline">¿Necesitas ayuda?</span>
             </div>
