@@ -210,7 +210,7 @@ function MasterLayout() {
     if (p === '/branding') return [{ label: 'Marca', active: false }, { label: 'Identidad / Branding', active: true }];
     if (p === '/themes') return [{ label: 'Diseño', active: false }, { label: 'Diseños / Themes', active: true }];
     if (p === '/account') return [{ label: 'Configuración', active: false }, { label: 'Mi Perfil', active: true }];
-    return [{ label: 'PrismaEditor', active: true }];
+    return [{ label: 'Prisma Studio', active: true }];
   };
 
   const activePath = location.pathname;
@@ -226,12 +226,18 @@ function MasterLayout() {
       >
         {/* LOGO AREA */}
         <div className="p-4 border-b flex items-center justify-between">
-          <div className="flex items-center gap-2 overflow-hidden">
-            <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-black text-sm shrink-0">
-              P
+          <div className="flex items-center gap-2.5 overflow-hidden">
+            <div className="relative w-8 h-8 flex items-center justify-center shrink-0">
+              {/* Layered translucent shapes creating a 3D glassmorphic prism */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-violet-600 via-indigo-500 to-cyan-400 rounded-lg rotate-12 opacity-80 blur-[0.5px] animate-pulse" />
+              <div className="absolute inset-0.5 bg-background rounded-lg flex items-center justify-center">
+                <div className="w-5 h-5 bg-gradient-to-tr from-violet-600 via-indigo-500 to-cyan-400 rounded-md rotate-45 flex items-center justify-center text-[9px] font-black text-white shadow-inner">
+                  <span className="rotate-[-45deg] scale-90">▲</span>
+                </div>
+              </div>
             </div>
             {!isCollapsed && (
-              <span className="font-extrabold text-sm tracking-tight truncate">PrismaEditor</span>
+              <span className="font-black text-sm tracking-tight truncate bg-gradient-to-r from-violet-600 via-indigo-500 to-cyan-500 bg-clip-text text-transparent">Prisma Studio</span>
             )}
           </div>
         </div>
@@ -320,7 +326,7 @@ function MasterLayout() {
           {/* LOG OUT */}
           <button
             onClick={() => {
-              if (confirm('¿Deseas cerrar tu sesión de PrismaEditor? El token se limpiará de la memoria de sesión.')) {
+              if (confirm('¿Deseas cerrar tu sesión de Prisma Studio? El token se limpiará de la memoria de sesión.')) {
                 logout();
                 toast.success('Sesión finalizada correctamente.');
               }

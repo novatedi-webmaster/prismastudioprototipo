@@ -48,12 +48,19 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 p-4 transition-colors">
       <div className="w-full max-w-md space-y-6">
         {/* LOGO & BRANDING */}
-        <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <KeyRound size={24} />
+        <div className="text-center space-y-3 flex flex-col items-center">
+          <div className="relative w-14 h-14 flex items-center justify-center shrink-0">
+            <div className="absolute inset-0 bg-gradient-to-tr from-violet-600 via-indigo-500 to-cyan-400 rounded-2xl rotate-12 opacity-80 blur-[1px] animate-pulse duration-3000" />
+            <div className="absolute inset-0.5 bg-zinc-50 dark:bg-zinc-950 rounded-2xl flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-tr from-violet-600 via-indigo-500 to-cyan-400 rounded-lg rotate-45 flex items-center justify-center text-sm font-black text-white shadow-inner">
+                <span className="rotate-[-45deg] scale-90">▲</span>
+              </div>
+            </div>
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight">PrismaEditor</h1>
-          <p className="text-sm text-muted-foreground">Panel de control soberano para tu negocio</p>
+          <div className="space-y-1">
+            <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-violet-600 via-indigo-500 to-cyan-500 bg-clip-text text-transparent">Prisma Studio</h1>
+            <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">Panel de control soberano para tu negocio</p>
+          </div>
         </div>
 
         {!isForgotMode ? (
@@ -112,7 +119,7 @@ export default function Login() {
                 </Button>
                 <div className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1">
                   <HelpCircle size={12} />
-                  PrismaEditor está alojado de forma soberana en tu servidor.
+                  Prisma Studio está alojado de forma soberana en tu servidor.
                 </div>
               </CardFooter>
             </Card>
