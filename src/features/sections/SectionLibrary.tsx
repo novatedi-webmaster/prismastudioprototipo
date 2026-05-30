@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select';
 import { 
   Search, BookOpen, Layers, Plus, ExternalLink, Sparkles, 
-  HelpCircle, CheckCircle, Info, Compass, Sliders, ArrowUpRight 
+  HelpCircle, CheckCircle, Info, Compass, Sliders, ArrowUpRight, RefreshCw
 } from 'lucide-react';
 import { toast } from 'sonner';
 
