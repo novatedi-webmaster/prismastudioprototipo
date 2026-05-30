@@ -42,7 +42,9 @@ export default function MaintenanceManager() {
     setConfig(updated);
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(updated));
     // Emit global event to let App.tsx know if it should show status banner
-    window.dispatchEvent(new Event('maintenance-updated'));
+    setTimeout(() => {
+      window.dispatchEvent(new Event('maintenance-updated'));
+    }, 0);
   };
 
   const handleToggle = (active: boolean) => {

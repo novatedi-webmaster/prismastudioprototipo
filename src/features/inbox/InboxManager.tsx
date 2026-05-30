@@ -114,18 +114,22 @@ export default function InboxManager() {
       setMessages(prev => {
         const updated = prev.map(m => m.id === id ? { ...m, unread: false } : m);
         sessionStorage.setItem(SESSION_KEY, JSON.stringify(updated));
-        // Emit custom event to notify Sidebar unread count to update
-        window.dispatchEvent(new Event('inbox-updated'));
         return updated;
       });
+      // Emit custom event to notify Sidebar unread count to update asynchronously
+      setTimeout(() => {
+        window.dispatchEvent(new Event('inbox-updated'));
+      }, 0);
     }
   }, [id]);
 
   const saveToStorage = (updated: ContactMessage[]) => {
     setMessages(updated);
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(updated));
-    // Emit custom event to notify Sidebar unread count to update
-    window.dispatchEvent(new Event('inbox-updated'));
+    // Emit custom event to notify Sidebar unread count to update asynchronously
+    setTimeout(() => {
+      window.dispatchEvent(new Event('inbox-updated'));
+    }, 0);
   };
 
   // Filter messages
