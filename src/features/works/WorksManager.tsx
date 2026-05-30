@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select';
 import { 
   Search, Grid, List, Plus, Heart, SlidersHorizontal, 
-  ChevronLeft, ChevronRight, Image as ImageIcon, Eye, Trash2, Edit 
+  ChevronLeft, ChevronRight, Image as ImageIcon, Eye, Trash2, Edit, RefreshCw
 } from 'lucide-react';
 import { toast } from 'sonner';
 
