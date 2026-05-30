@@ -118,14 +118,14 @@ export function SecuritySettings() {
                 {sessions.map((s, idx) => (
                   <div key={idx} className="p-3.5 flex items-center justify-between">
                     <div>
-                      <p className="font-extrabold flex items-center gap-1.5">
+                      <div className="font-extrabold flex items-center gap-1.5">
                         {s.browser}
                         {s.current && (
                           <Badge variant="outline" className="text-[9px] px-1 bg-emerald-500/10 text-emerald-600 border-emerald-500/20 font-black">
                             Actual
                           </Badge>
                         )}
-                      </p>
+                      </div>
                       <p className="text-[10px] text-muted-foreground mt-0.5">IP: {s.ip} • {s.date}</p>
                     </div>
                     {!s.current && (
