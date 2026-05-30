@@ -26,6 +26,15 @@ import BlogManager from './features/blog/BlogManager';
 import BlogEditor from './features/blog/BlogEditor';
 import BrandingManager from './features/branding/BrandingManager';
 
+import InboxManager from './features/inbox/InboxManager';
+import AppointmentsManager from './features/appointments/AppointmentsManager';
+import SeoManager from './features/seo/SeoManager';
+import AnalyticsManager from './features/analytics/AnalyticsManager';
+import TeamManager from './features/team/TeamManager';
+import MaintenanceManager from './features/maintenance/MaintenanceManager';
+import { SecuritySettings, BackupSettings, LicenseSettings, LegalSettings } from './features/config/ConfigScreens';
+import HelpCenter from './features/help/HelpCenter';
+
 import { Toaster } from '@/components/ui/sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -34,7 +43,9 @@ import {
   Compass, LayoutGrid, FileText, ImageIcon, Palette, 
   ShoppingBag, Eye, User as UserIcon, LogOut, ChevronLeft, 
   ChevronRight, Search, ShieldCheck, HelpCircle, Command,
-  Sparkles, FolderHeart, Layers, Newspaper, BookOpen
+  Sparkles, FolderHeart, Layers, Newspaper, BookOpen,
+  Inbox, Calendar, Globe, TrendingUp, Users, Settings,
+  Lock, Database, Award, Scale, Hammer, MessageSquare
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -140,6 +151,51 @@ function MasterLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isCmdOpen, setIsCmdOpen] = useState(false);
 
+  // Unread Inbox count and Maintenance state managers
+  const [unreadInboxCount, setUnreadInboxCount] = useState(0);
+  const [isMaintenanceOn, setIsMaintenanceOn] = useState(false);
+
+  const updateUnreadCount = () => {
+    try {
+      const saved = sessionStorage.getItem('prisma_inbox_messages');
+      if (saved) {
+        const msgs = JSON.parse(saved);
+        const count = msgs.filter((m: any) => m.unread && !m.archived).length;
+        setUnreadInboxCount(count);
+      } else {
+        setUnreadInboxCount(2); // Initial Elena & Carlos unread
+      }
+    } catch {
+      setUnreadInboxCount(2);
+    }
+  };
+
+  const checkMaintenance = () => {
+    try {
+      const saved = sessionStorage.getItem('prisma_maintenance_mode');
+      if (saved) {
+        const conf = JSON.parse(saved);
+        setIsMaintenanceOn(conf.active);
+      } else {
+        setIsMaintenanceOn(false);
+      }
+    } catch {
+      setIsMaintenanceOn(false);
+    }
+  };
+
+  useEffect(() => {
+    updateUnreadCount();
+    checkMaintenance();
+
+    window.addEventListener('inbox-updated', updateUnreadCount);
+    window.addEventListener('maintenance-updated', checkMaintenance);
+    return () => {
+      window.removeEventListener('inbox-updated', updateUnreadCount);
+      window.removeEventListener('maintenance-updated', checkMaintenance);
+    };
+  }, []);
+
   // Keyboard shortcut listener for ⌘K
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -176,6 +232,20 @@ function MasterLayout() {
       ]
     },
     {
+      title: 'Comunicación',
+      items: [
+        { label: 'Bandeja de Entrada', path: '/inbox', icon: <Inbox size={16} /> },
+        { label: 'Cita Previa', path: '/appointments', icon: <Calendar size={16} /> }
+      ]
+    },
+    {
+      title: 'Marketing & IA',
+      items: [
+        { label: 'Posicionamiento SEO', path: '/seo', icon: <Globe size={16} /> },
+        { label: 'Analíticas', path: '/analytics', icon: <TrendingUp size={16} /> }
+      ]
+    },
+    {
       title: 'Marca',
       items: [
         { label: 'Identidad / Branding', path: '/branding', icon: <Palette size={16} /> }
@@ -185,6 +255,23 @@ function MasterLayout() {
       title: 'Diseño',
       items: [
         { label: 'Diseños / Themes', path: '/themes', icon: <Palette size={16} /> }
+      ]
+    },
+    {
+      title: 'Configuración',
+      items: [
+        { label: 'Equipo & Permisos', path: '/team', icon: <Users size={16} /> },
+        { label: 'Modo Mantenimiento', path: '/maintenance', icon: <Hammer size={16} /> },
+        { label: 'Seguridad', path: '/security', icon: <Lock size={16} /> },
+        { label: 'Copias de Seguridad', path: '/backups', icon: <Database size={16} /> },
+        { label: 'Suscripción / Licencia', path: '/license', icon: <Award size={16} /> },
+        { label: 'Textos Legales', path: '/legal', icon: <Scale size={16} /> }
+      ]
+    },
+    {
+      title: 'Soporte',
+      items: [
+        { label: 'Centro de Ayuda', path: '/help', icon: <HelpCircle size={16} /> }
       ]
     }
   ];
@@ -210,6 +297,20 @@ function MasterLayout() {
     if (p === '/branding') return [{ label: 'Marca', active: false }, { label: 'Identidad / Branding', active: true }];
     if (p === '/themes') return [{ label: 'Diseño', active: false }, { label: 'Diseños / Themes', active: true }];
     if (p === '/account') return [{ label: 'Configuración', active: false }, { label: 'Mi Perfil', active: true }];
+    
+    // NEW BREADCRUMBS
+    if (p === '/inbox' || p.startsWith('/inbox/')) return [{ label: 'Comunicación', active: false }, { label: 'Bandeja de Entrada', active: true }];
+    if (p === '/appointments') return [{ label: 'Comunicación', active: false }, { label: 'Cita Previa', active: true }];
+    if (p === '/seo') return [{ label: 'Marketing & IA', active: false }, { label: 'Posicionamiento SEO', active: true }];
+    if (p === '/analytics') return [{ label: 'Marketing & IA', active: false }, { label: 'Analíticas de Tráfico', active: true }];
+    if (p === '/team') return [{ label: 'Configuración', active: false }, { label: 'Equipo & Permisos', active: true }];
+    if (p === '/maintenance') return [{ label: 'Configuración', active: false }, { label: 'Modo Mantenimiento', active: true }];
+    if (p === '/security') return [{ label: 'Configuración', active: false }, { label: 'Seguridad', active: true }];
+    if (p === '/backups') return [{ label: 'Configuración', active: false }, { label: 'Copias de Seguridad', active: true }];
+    if (p === '/license') return [{ label: 'Configuración', active: false }, { label: 'Suscripción / Licencia', active: true }];
+    if (p === '/legal') return [{ label: 'Configuración', active: false }, { label: 'Textos Legales', active: true }];
+    if (p === '/help') return [{ label: 'Soporte', active: false }, { label: 'Centro de Ayuda', active: true }];
+    
     return [{ label: 'Prisma Studio', active: true }];
   };
 
@@ -278,19 +379,30 @@ function MasterLayout() {
               )}
               <div className="space-y-0.5 pt-1">
                 {group.items.map((item) => {
-                  const isActive = activePath === item.path;
+                  const isActive = activePath === item.path || (item.path === '/inbox' && activePath.startsWith('/inbox/'));
                   return (
                     <button
                       key={item.path}
                       onClick={() => navigate(item.path)}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
                         isActive 
                           ? 'bg-primary text-primary-foreground shadow-sm' 
                           : 'hover:bg-muted/60 text-muted-foreground hover:text-foreground'
                       } ${isCollapsed ? 'justify-center' : ''}`}
                     >
-                      <div className="shrink-0">{item.icon}</div>
-                      {!isCollapsed && <span className="truncate">{item.label}</span>}
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <div className="shrink-0">{item.icon}</div>
+                        {!isCollapsed && <span className="truncate">{item.label}</span>}
+                      </div>
+                      {!isCollapsed && item.path === '/inbox' && unreadInboxCount > 0 && (
+                        <span className={`font-extrabold text-[9px] px-1.5 py-0.5 rounded-full shrink-0 ${
+                          isActive 
+                            ? 'bg-white text-primary' 
+                            : 'bg-amber-500 text-white dark:bg-amber-600'
+                        }`}>
+                          {unreadInboxCount}
+                        </span>
+                      )}
                     </button>
                   );
                 })}
@@ -374,6 +486,14 @@ function MasterLayout() {
           </div>
         </header>
 
+        {/* MAINTAINANCE WARNING BANNER FOR PANEL */}
+        {isMaintenanceOn && (
+          <div className="bg-amber-500 text-white font-bold text-center py-1.5 px-4 text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 select-none shrink-0 animate-pulse">
+            <Hammer size={12} />
+            <span>Aviso: Modo Mantenimiento Activo. Los visitantes verán la pantalla de cortesía 503.</span>
+          </div>
+        )}
+
         {/* MAIN BODY AREA */}
         <main className="grow p-6 overflow-y-auto bg-zinc-50/50 dark:bg-zinc-950/10">
           <Routes>
@@ -395,6 +515,21 @@ function MasterLayout() {
             <Route path="/web" element={<FullPreview />} />
             <Route path="/account" element={<ProfileSettings />} />
             <Route path="/marketplace" element={<Marketplace />} />
+            
+            {/* NEW AMPLIFIED ROUTES */}
+            <Route path="/inbox" element={<InboxManager />} />
+            <Route path="/inbox/:id" element={<InboxManager />} />
+            <Route path="/appointments" element={<AppointmentsManager />} />
+            <Route path="/seo" element={<SeoManager />} />
+            <Route path="/analytics" element={<AnalyticsManager />} />
+            <Route path="/team" element={<TeamManager />} />
+            <Route path="/maintenance" element={<MaintenanceManager />} />
+            <Route path="/security" element={<SecuritySettings />} />
+            <Route path="/backups" element={<BackupSettings />} />
+            <Route path="/license" element={<LicenseSettings />} />
+            <Route path="/legal" element={<LegalSettings />} />
+            <Route path="/help" element={<HelpCenter />} />
+
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </main>
